@@ -1,0 +1,24 @@
+[package]
+name = "pivot"
+version = "0.1.0"
+edition = "2024"
+description = "An Excel-style pivot table in Rust, built step by step on NYC taxi data"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/shipbystep/pivot"
+publish = false
+
+# arrow and parquet 59 match what DataFusion 55 uses, so later episodes can share batches.
+[dependencies]
+arrow = { version = "59.2", default-features = false, features = ["csv"] }
+parquet = { version = "59.2", default-features = false, features = ["arrow", "snap", "zstd"] }
+rusqlite = { version = "0.40", features = ["bundled"] }
+
+[dev-dependencies]
+cucumber = "0.23"
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[[test]]
+name = "acceptance"
+path = "tests/acceptance/main.rs"
+harness = false
