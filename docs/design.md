@@ -48,6 +48,22 @@ flowchart TD
 
 Today only `app`, `data` and `model` exist. The others come when a scenario needs them.
 
+## Tech choices
+
+| Tool | Job | Why this one | Also good, not chosen | Used from |
+|---|---|---|---|---|
+| Rust | Language | One small program, no server, no GC pauses; the compiler catches many bugs early | Python + pandas, Go | ep 0 |
+| Apache Arrow | Data in memory | Columnar, CPU-friendly; a shared standard (Polars, DuckDB, pandas read it) | Own `Vec<Trip>` structs | ep 0 |
+| Parquet | Data on disk | Compressed, typed columns; readers skip columns and row groups | CSV | ep 0 (read), ep 5 (write) |
+| DataFusion | SQL engine | An embeddable library, multi-core, built to be extended with our own pivot | DuckDB, Polars | ep 3 |
+| SQLite (`rusqlite`, bundled) | Source database | One file, no server; bundled build needs nothing installed | Postgres or SQL Server in Docker | ep 0 |
+| tokio | Async runtime | DataFusion's API is async; cucumber runs on it today | — | ep 0 (tests) |
+| cucumber | BDD | Given/When/Then scenarios in plain English | Plain `#[test]` only | ep 0 |
+| just | Task runner | One readable file of commands for humans and agents | make, shell scripts | ep 0 |
+| clippy + `scripts/shape-check.sh` | Rule checks | Built into Rust; the script covers file length and items per file | Review by eye | ep 0 |
+
+`arrow` and `parquet` are pinned to 59.2 because DataFusion 55 uses Arrow 59: with one Arrow version in the program, batches pass between the libraries without conversion.
+
 ## How we build it
 
 - BDD outside: every feature starts as a scenario in `features/*.feature`.
