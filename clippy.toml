@@ -1,0 +1,5 @@
+# Limits from AGENTS.md "Code shape". A reader holds about 7 ± 2 things in mind.
+too-many-arguments-threshold = 5
+too-many-lines-threshold = 30
+cognitive-complexity-threshold = 7
+excessive-nesting-threshold = 3
