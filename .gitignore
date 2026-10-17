@@ -1,0 +1,11 @@
+/target
+/data/
+/out/
+.env
+.DS_Store
+
+# Agent and session notes stay local
+AGENTS.md
+CLAUDE.md
+Handoff.md
+Steps.md
